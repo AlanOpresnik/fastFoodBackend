@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 export const authenticateUser = (req, res, next) => {
   // Verificar si hay un token JWT en el encabezado de autorización

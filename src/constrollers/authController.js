@@ -1,8 +1,8 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User.js");
 
-export const register = async (req, res) => {
+ const register = async (req, res) => {
   try {
     const { name, lastName, email, password } = req.body;
     // Hash de la contraseña
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
 // Inicio de sesión
 
 
-export const login = async (req, res) => {
+ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -39,7 +39,7 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Error al iniciar sesión" });
   }
 };
-export const getAllUsers = async (req, res) => {
+ const getAllUsers = async (req, res) => {
 
    try {
        const users = await User.find();
@@ -48,3 +48,5 @@ export const getAllUsers = async (req, res) => {
        res.status(500).json({ message: "Error al buscar usuarios" });
    }
  }
+ module.exports = { register, login, getAllUsers };
+

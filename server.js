@@ -1,37 +1,30 @@
-
-import {conection} from "./database/conection.js"
-import dotenv from "dotenv"; 
+const { conection } = require("./database/conection.js");
+const dotenv = require("dotenv");
 dotenv.config();
-import authRoutes from "./src/routes/authRoutes.js"
-import express from "express"; 
-import cors from "cors"; 
-import path from "path"; 
-
-
+const authRoutes = require("./src/routes/authRoutes.js");
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
 conection();
 
-
 const app = express();
-const port = 3900; 
+const port = 3900;
 
 // Middleware
-app.use(cors()); 
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true })); 
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Rutas
 app.use("/api/auth", authRoutes);
 
-
 app.get("/api", (req, res) => {
-    res.send("Welcome")
-})
+    res.send("Welcome");
+});
 
-app.use("/uploadsProducts", express.static(new URL("uploadsProducts", import.meta.url).pathname));
-
-
+app.use("/uploadsProducts", express.static(path.join(__dirname, "uploadsProducts")));
 
 app.listen(port, () => {
-  console.log("Escuchando en el puerto " + port);
+    console.log("Escuchando en el puerto " + port);
 });
