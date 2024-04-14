@@ -32,8 +32,8 @@ const User = require("../models/User.js");
     }
     // Generar una clave secreta dinámicamente
     const secret = Math.random().toString(36).slice(-8);
-    const token = jwt.sign({ userId: user._id }, secret, { expiresIn: "1h" });
-    res.status(200).json({ token });
+    const token = jwt.sign({ userId: user._id }, secret, { expiresIn: "2d" });
+    res.status(200).json({ token, name:user.name });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error al iniciar sesión" });
