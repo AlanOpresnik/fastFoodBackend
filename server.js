@@ -2,6 +2,7 @@ const { conection } = require("./database/conection.js");
 const dotenv = require("dotenv");
 dotenv.config();
 const authRoutes = require("./src/routes/authRoutes.js");
+const productRoutes = require("./src/routes/productRoutes.js");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rutas
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 app.get("/api", (req, res) => {
     res.send("Welcome");
