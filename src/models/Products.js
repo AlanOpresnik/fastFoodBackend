@@ -36,7 +36,18 @@ const mongoose = require("mongoose");
           tallas: [{
             type: String, // Puedes cambiar el tipo según tus necesidades
             
-        }]
+        }],
+        image: {
+          public_id: {
+            type: String,
+            required: true
+          },
+          secure_url: {
+            type: String,
+            required: true
+          }
+        }
+      
     });
 
     const Product = mongoose.model("Product", productSchema);
