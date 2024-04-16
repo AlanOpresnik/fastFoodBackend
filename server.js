@@ -25,7 +25,7 @@ app.get("/api", (req, res) => {
     res.send("Welcome");
 });
 
-app.use("/uploadsProducts", express.static(path.join(__dirname, "uploadsProducts")));
+app.use("/uploadsProducts", express.static(path.join(__dirname, "src", "uploadsProducts")));
 
 app.listen(port, () => {
     console.log("Escuchando en el puerto " + port);
