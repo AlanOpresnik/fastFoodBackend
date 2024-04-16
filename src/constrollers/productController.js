@@ -35,42 +35,44 @@ const createProduct = async (req, res) => {
       isNewProduct: params.isNewProduct,
       ofert: params.ofert,
       tallas: params.tallas,
+      images: [] // Inicializamos el array de imágenes
     });
 
-    if (req.files && req.files.image) {
-      const result = await cloudinaryFunctions.uploadImage(req.files.image.tempFilePath);
-      console.log(result); // Verifica el resultado de la subida de la imagen
+    if (req.files && req.files.images && req.files.images.length > 0) {
+      // Iteramos sobre cada imagen
+      for (const image of req.files.images) {
+        const result = await cloudinaryFunctions.uploadImage(image.tempFilePath);
+        console.log(result); 
 
-      // Verifica si result contiene las propiedades esperadas antes de asignarlas
-      if (result && result.public_id && result.secure_url) {
-        newProduct.image = {
-          public_id: result.public_id,
-          secure_url: result.secure_url,
-        };
-      } else {
-        throw new Error("No se recibió la URL de la imagen");
+        // Verifica si result contiene las propiedades esperadas antes de asignarlas
+        if (result && result.public_id && result.secure_url) {
+          newProduct.images.push({
+            public_id: result.public_id,
+            secure_url: result.secure_url
+          });
+        } else {
+          throw new Error("No se recibió la URL de la imagen");
+        }
+        await fs.unlink(image.tempFilePath);
+        console.log(image.tempFilePath);
       }
-      await fs.unlink(req.files.image.tempFilePath)
-      console.log(req.files.image.tempFilePath)
     }
-
 
     const savedProduct = await newProduct.save();
 
     return res.status(200).send({
       status: "success",
       msg: "Producto guardado con éxito",
-      product: savedProduct,
+      product: savedProduct
     });
   } catch (error) {
     return res.status(500).json({
       status: "error",
       message: "Error al subir el producto",
-      data: error.message,
+      data: error.message
     });
   }
 };
-
 
 const deleteProduct = async (req, res) => {
   try {
@@ -80,10 +82,17 @@ const deleteProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "El producto no existe" });
     }
-    if (product.image.public_id) {
 
-      const result = await cloudinaryFunctions.deleteImage(product.image?.public_id)
+    // Verificar si hay imágenes asociadas al producto y eliminarlas de Cloudinary
+    if (product.images && product.images.length > 0) {
+      for (const image of product.images) {
+        if (image.public_id) {
+          const result = await cloudinaryFunctions.deleteImage(image.public_id);
+          console.log(result); // Puedes verificar el resultado de la eliminación de la imagen en Cloudinary
+        }
+      }
     }
+
     await Product.findByIdAndDelete(productId);
     return res.status(200).json({ message: "Producto eliminado correctamente" });
   } catch (error) {

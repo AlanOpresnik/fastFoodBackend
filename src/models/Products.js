@@ -37,16 +37,10 @@ const mongoose = require("mongoose");
             type: String, // Puedes cambiar el tipo según tus necesidades
             
         }],
-        image: {
-          public_id: {
-            type: String,
-            required: true
-          },
-          secure_url: {
-            type: String,
-            required: true
-          }
-        }
+        images: [{
+          public_id: { type: String, required: true },
+          secure_url: { type: String, required: true }
+        }]
       
     });
 
