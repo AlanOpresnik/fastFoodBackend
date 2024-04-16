@@ -5,6 +5,7 @@ const authRoutes = require("./src/routes/authRoutes.js");
 const productRoutes = require("./src/routes/productRoutes.js");
 const express = require("express");
 const cors = require("cors");
+const fileUpload = require("express-fileupload")
 const path = require("path");
 
 conection();
@@ -24,6 +25,11 @@ app.use("/api/products", productRoutes);
 app.get("/api", (req, res) => {
     res.send("Welcome");
 });
+
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : './uploads'
+}));
 
 app.use("/uploadsProducts", express.static(path.join("src", "uploadsProducts")));
 
