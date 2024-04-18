@@ -48,6 +48,28 @@ const User = require("../models/User.js");
    }
  }
 
+ const getUserById = async (req, res) => {
+  const userId = req.params.id; // Obtener el ID del usuario de los parámetros de la URL
+
+  try {
+      // Buscar el usuario por su ID en la base de datos
+      const user = await User.findById(userId);
+
+      if (!user) {
+          // Si no se encuentra ningún usuario con el ID proporcionado, devolver un error 404
+          return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      // Si se encuentra el usuario, devolverlo en la respuesta
+      res.status(200).json(user);
+  } catch (error) {
+      // Si ocurre algún error durante la búsqueda del usuario, devolver un error 500
+      console.error("Error al seleccionar el usuario por ID:", error);
+      res.status(500).json({ message: "Error del servidor al seleccionar el usuario por ID" });
+  }
+};
+
+
  const addToCart = async (req, res) => {
   const { userId, productId, quantity } = req.body;
   try {
@@ -80,5 +102,5 @@ const User = require("../models/User.js");
   }
 };
 
- module.exports = { register, login, getAllUsers,addToCart };
+ module.exports = { register, login, getAllUsers,addToCart,getUserById };
 
