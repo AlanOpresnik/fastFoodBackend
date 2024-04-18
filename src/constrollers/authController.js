@@ -47,5 +47,38 @@ const User = require("../models/User.js");
        res.status(500).json({ message: "Error al buscar usuarios" });
    }
  }
- module.exports = { register, login, getAllUsers };
+
+ const addToCart = async (req, res) => {
+  const { userId, productId, quantity } = req.body;
+  try {
+      // Verificar si el usuario existe
+      const user = await User.findById(userId);
+      console.log(userId)
+
+      if (!user) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      // Verificar si el producto ya está en el carrito
+      const existingProductIndex = user.cart.findIndex(item => item.productId.toString() === productId);
+
+      if (existingProductIndex !== -1) {
+          // Si el producto ya está en el carrito, actualizar la cantidad
+          user.cart[existingProductIndex].quantity += quantity || 1;
+      } else {
+          // Si el producto no está en el carrito, agregarlo
+          user.cart.push({ productId, quantity: quantity || 1 });
+      }
+
+      // Guardar los cambios en el usuario
+      await user.save();
+
+      res.status(200).json({ message: "Producto agregado al carrito correctamente", user });
+  } catch (error) {
+      console.error("Error al agregar producto al carrito:", error);
+      res.status(500).json({ message: "Error del servidor al agregar producto al carrito" });
+  }
+};
+
+ module.exports = { register, login, getAllUsers,addToCart };
 
