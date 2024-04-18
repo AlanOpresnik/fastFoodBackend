@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllProducts, createProduct, deleteProduct } = require("../constrollers/productController");
+const { getAllProducts, createProduct, deleteProduct, getProductById } = require("../constrollers/productController");
 const multer = require('multer');
 const fileUpload = require("express-fileupload");
 
@@ -14,6 +14,7 @@ router.use(fileUpload({
 
 
 router.get("/getProducts", getAllProducts);
+router.get("/getProduct/:id", getProductById);
 router.post('/postProduct', createProduct);
 router.delete('/deleteProduct/:id', deleteProduct)
 
