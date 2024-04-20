@@ -42,7 +42,7 @@ const createProduct = async (req, res) => {
       // Iteramos sobre cada imagen
       for (const image of req.files.images) {
         const result = await cloudinaryFunctions.uploadImage(image.tempFilePath);
-        console.log(result); 
+        console.log(result);
 
         // Verifica si result contiene las propiedades esperadas antes de asignarlas
         if (result && result.public_id && result.secure_url) {
