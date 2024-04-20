@@ -8,6 +8,6 @@ router.post("/login", login);
 router.post("/addToCart", addToCart);
 router.get("/getUsers", getAllUsers);
 router.get("/getUserById/:id", getUserById);
-router.delete('/deleteProductCart', removeFromCart)
+router.post('/deleteProductCart', removeFromCart)
 
 module.exports = router;
