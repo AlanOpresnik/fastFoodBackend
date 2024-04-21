@@ -7,6 +7,7 @@ const express = require("express");
 const cors = require("cors");
 const fileUpload = require("express-fileupload")
 const path = require("path");
+const paymentRoutes = require("./src/routes/paymentRoutes.js");
 
 conection();
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // Rutas
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/mp",paymentRoutes)
 
 app.get("/api", (req, res) => {
     res.send("Welcome");
