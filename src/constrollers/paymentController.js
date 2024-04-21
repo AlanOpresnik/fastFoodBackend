@@ -1,7 +1,7 @@
 const MercadoPago = require('mercadopago');
 
 const client = new MercadoPago.MercadoPagoConfig({
-    accessToken:"APP_USR-2313020214010464-042020-e081e4d8d66c8815b48219404edcbf40-1777879429"
+    accessToken: "APP_USR-2313020214010464-042020-e081e4d8d66c8815b48219404edcbf40-1777879429"
 }
 );
 
@@ -23,8 +23,8 @@ const createOrder = async (req, res) => {
             }
         };
 
-        const preference =  new MercadoPago.Preference(client);
-        const result = await preference.create({body});
+        const preference = new MercadoPago.Preference(client);
+        const result = await preference.create({ body });
         res.json({
             result: result
         });

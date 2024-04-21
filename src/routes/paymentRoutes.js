@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/create_preference',createOrder )
 router.get('/success', (req, res) => res.send("Pago completo"))
-router.get('/webhook', (req, res) => res.send("webhook"))
+router.post('/webhook', (req, res) => res.send("webhook"))
 
 module.exports = router;
