@@ -22,9 +22,25 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    clientId: {
+    cp: {
+        type: Number,
+        required: true
+    },
+    dni: {
+        type: Number,
+        required: true
+    },
+    name: {
         type: String,
-      
+        required: true
+    },
+    shipping_method: {
+        type: String,
+        required: true
+    },
+    payment_method: {
+        type: String,
+        required: true
     },
     external_reference: {
         type: String,
@@ -32,10 +48,9 @@ const orderSchema = new mongoose.Schema({
     },
     paymentId: {
         type: String,
-        
+
     },
     status: String, // 'pendiente', 'pagado', etc.
-    preferenceId: String // ID de la preferencia de MercadoPago
 });
 
 const Order = mongoose.model('Order', orderSchema);

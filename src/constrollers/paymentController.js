@@ -11,7 +11,7 @@ const createOrder = async (req, res) => {
     try {
         // Obtener datos de la solicitud
         const externalReference = uuidv4();
-        const { title, quantity, price, userId, userEmail } = req.body;
+        const { title, quantity, price, userId, userEmail, name, dni, payment_method, shipping_method, cp } = req.body;
 
         // Crear la preferencia de MercadoPago
         const body = {
@@ -37,11 +37,14 @@ const createOrder = async (req, res) => {
         // Guardar la orden en la base de datos
         const order = new Order({
             userId: userId,
+            name: name,
+            cp: cp,
+            dni: dni,
+            payment_method: payment_method,
+            shipping_method: shipping_method,
             userEmail: userEmail,
             totalAmount: Number(price),
             status: 'pendiente',
-            preferenceId: result.id,
-            clientId: result.client_id,
             external_reference: result.external_reference,
         });
         await order.save();
@@ -124,6 +127,6 @@ const getOrderById = async (req, res) => {
 
 
 
-module.exports = { createOrder, webHook,getOrderById };
+module.exports = { createOrder, webHook, getOrderById };
 
 
