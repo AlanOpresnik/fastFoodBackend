@@ -2,6 +2,8 @@ const MercadoPago = require('mercadopago');
 const fetch = require('node-fetch'); // Asumiendo que estás utilizando Node.js para tu backend
 const Order = require('../models/Order.js');
 const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
+
 
 const client = new MercadoPago.MercadoPagoConfig({
     accessToken: "APP_USR-2313020214010464-042020-e081e4d8d66c8815b48219404edcbf40-1777879429"
@@ -125,8 +127,30 @@ const getOrderById = async (req, res) => {
     }
 }
 
+const CreateToken = async (req, res) => {
+    try {
+        // Obtener el total de la compra desde la solicitud
+        const { total } = req.body;
+
+        // Verificar si el total está presente en la solicitud
+        if (!total) {
+            return res.status(400).json({ message: 'Se requiere el total de la compra' });
+        }
 
 
-module.exports = { createOrder, webHook, getOrderById };
+
+        // Crear el token JWT con el total de la compra como payload
+        const token = jwt.sign({ total }, null, { algorithm: 'none' });
+
+        // Enviar el token generado como respuesta
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error('Error al crear el token:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+
+module.exports = { createOrder, webHook, getOrderById, CreateToken };
 
 
