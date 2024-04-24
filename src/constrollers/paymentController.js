@@ -13,12 +13,12 @@ const createOrder = async (req, res) => {
     try {
         // Obtener datos de la solicitud
         const externalReference = uuidv4();
-        const { products, userId,price, userEmail, name, dni, payment_method, shipping_method, cp } = req.body;
+        const { products, userId,price, quantity, userEmail, name, dni, payment_method, shipping_method, cp } = req.body;
 
         // Crear los items para la preferencia de MercadoPago
         const items = products.map(product => ({
             title: product.title,
-            quantity: Number(product.quantity),
+            quantity: Number(quantity),
             unit_price: Number(product.price),
             currency_id: 'ARS',
         }));
