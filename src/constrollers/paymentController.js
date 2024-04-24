@@ -13,7 +13,7 @@ const createOrder = async (req, res) => {
     try {
         // Obtener datos de la solicitud
         const externalReference = uuidv4();
-        const { products, userId, userEmail, name, dni, payment_method, shipping_method, cp } = req.body;
+        const { products, userId,price, userEmail, name, dni, payment_method, shipping_method, cp } = req.body;
 
         // Crear los items para la preferencia de MercadoPago
         const items = products.map(product => ({
@@ -49,7 +49,7 @@ const createOrder = async (req, res) => {
             shipping_method: shipping_method,
             userEmail: userEmail,
             products: products, // Guardar los productos en la orden
-            totalAmount: calculateTotalAmount(products), // Calcular el monto total
+            totalAmount: Number(price), // Calcular el monto total
             status: 'pendiente',
             external_reference: result.external_reference,
         });
