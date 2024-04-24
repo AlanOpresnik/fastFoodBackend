@@ -13,16 +13,19 @@ const createOrder = async (req, res) => {
     try {
         // Obtener datos de la solicitud
         const externalReference = uuidv4();
-        const { title, quantity, price, userId, userEmail, name, dni, payment_method, shipping_method, cp } = req.body;
+        const { products, userId, userEmail, name, dni, payment_method, shipping_method, cp } = req.body;
+
+        // Crear los items para la preferencia de MercadoPago
+        const items = products.map(product => ({
+            title: product.title,
+            quantity: Number(product.quantity),
+            unit_price: Number(product.price),
+            currency_id: 'ARS',
+        }));
 
         // Crear la preferencia de MercadoPago
         const body = {
-            items: [{
-                title: title,
-                quantity: Number(quantity),
-                unit_price: Number(price),
-                currency_id: 'ARS',
-            }],
+            items: items,
             back_urls: {
                 success: 'http://localhost:5173/#/payment/success',
                 failure: 'http://localhost:5173/#/',
@@ -45,7 +48,8 @@ const createOrder = async (req, res) => {
             payment_method: payment_method,
             shipping_method: shipping_method,
             userEmail: userEmail,
-            totalAmount: Number(price),
+            products: products, // Guardar los productos en la orden
+            totalAmount: calculateTotalAmount(products), // Calcular el monto total
             status: 'pendiente',
             external_reference: result.external_reference,
         });
