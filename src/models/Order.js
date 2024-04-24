@@ -50,6 +50,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
 
     },
+    created_At: {
+        type: Date,
+        default: Date.now
+    },
     status: String, // 'pendiente', 'pagado', etc.
 });
 
