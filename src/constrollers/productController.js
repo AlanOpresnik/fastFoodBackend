@@ -115,4 +115,33 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, createProduct, getProductById, deleteProduct };
+const searchProducts = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q) {
+      return res.status(400).json({
+        status: "error",
+        message: "Se requiere un parámetro de búsqueda 'q'",
+      });
+    }
+
+    // Realizar la búsqueda de productos que coincidan con el valor de 'q' en el título o la descripción
+    const products = await Product.find({
+      $or: [
+        { title: { $regex: q, $options: 'i' } }, // Búsqueda de título que contenga el valor de 'q' (ignorando mayúsculas y minúsculas)
+        { description: { $regex: q, $options: 'i' } }, // Búsqueda de descripción que contenga el valor de 'q' (ignorando mayúsculas y minúsculas)
+      ]
+    });
+
+    return res.status(200).json({ products });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Error al buscar productos",
+      data: error,
+    });
+  }
+};
+
+module.exports = { getAllProducts, createProduct, getProductById, deleteProduct,searchProducts };
