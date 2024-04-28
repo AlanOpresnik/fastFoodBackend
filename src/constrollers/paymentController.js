@@ -27,7 +27,7 @@ const createOrder = async (req, res) => {
         const body = {
             items: items,
             back_urls: {
-                success: 'http://localhost:5173/#/payment/success',
+                success: 'https://fastfood-front-six.vercel.app/#/payment/success',
                 failure: 'http://localhost:5173/#/',
                 pending: 'http://localhost:5173/#/payment/success'
             },
