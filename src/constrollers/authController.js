@@ -129,5 +129,21 @@ const removeFromCart = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getAllUsers, addToCart, getUserById,removeFromCart };
+
+const updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const updateData = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate({ _id: userId }, updateData, { new: true });
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { register, login, getAllUsers, addToCart, getUserById, removeFromCart, updateUser };
 
